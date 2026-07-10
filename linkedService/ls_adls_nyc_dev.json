@@ -1,0 +1,10 @@
+{
+	"name": "ls_adls_nyc_dev",
+	"properties": {
+		"annotations": [],
+		"type": "AzureBlobFS",
+		"typeProperties": {
+			"url": "https://stnyctaxidev001.dfs.core.windows.net/"
+		}
+	}
+}
