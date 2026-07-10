@@ -1,0 +1,15 @@
+{
+	"name": "adfnyctaxidev001",
+	"properties": {
+		"trustModeClaimForMi": {
+			"value": "Disabled",
+			"editable": true
+		}
+	},
+	"location": "centralindia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "885cc54d-141e-41ad-b068-38ba58c0c69c",
+		"tenantId": "51d58522-8e1a-4b9b-80d6-f5d8ed320e6b"
+	}
+}
