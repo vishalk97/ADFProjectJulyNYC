@@ -5,6 +5,11 @@
 			"referenceName": "ls_adls_nyc_dev",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"file_name": {
+				"type": "string"
+			}
+		},
 		"annotations": [],
 		"type": "Binary",
 		"typeProperties": {
