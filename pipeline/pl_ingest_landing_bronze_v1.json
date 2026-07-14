@@ -1,5 +1,5 @@
 {
-	"name": "pipeline_data_move_landing_bronze",
+	"name": "pl_ingest_landing_bronze_v1",
 	"properties": {
 		"activities": [
 			{
