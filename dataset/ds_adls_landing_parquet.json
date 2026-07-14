@@ -1,0 +1,19 @@
+{
+	"name": "ds_adls_landing_parquet",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_adls_nyc_dev",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileSystem": "landing"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": []
+	}
+}
