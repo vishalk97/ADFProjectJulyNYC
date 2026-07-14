@@ -10,6 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
+				"fileName": "fhvhv_tripdata_2026-05.parquet",
 				"fileSystem": "landing"
 			},
 			"compressionCodec": "snappy"
