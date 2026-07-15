@@ -1,0 +1,16 @@
+{
+	"name": "config_table_pl_metadata",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "sql_nyc_taxi_dev_001",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "config_table"
+		}
+	}
+}
