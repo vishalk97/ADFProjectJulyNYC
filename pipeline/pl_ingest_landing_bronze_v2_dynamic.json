@@ -89,12 +89,9 @@
 									}
 								},
 								"sink": {
-									"type": "ParquetSink",
+									"type": "BinarySink",
 									"storeSettings": {
 										"type": "AzureBlobFSWriteSettings"
-									},
-									"formatSettings": {
-										"type": "ParquetWriteSettings"
 									}
 								},
 								"enableStaging": false
@@ -110,8 +107,14 @@
 							],
 							"outputs": [
 								{
-									"referenceName": "ds_adls_bronze_parquet",
-									"type": "DatasetReference"
+									"referenceName": "ds_adls_bronze_dynamic",
+									"type": "DatasetReference",
+									"parameters": {
+										"file_name": {
+											"value": "@item().name",
+											"type": "Expression"
+										}
+									}
 								}
 							]
 						}
