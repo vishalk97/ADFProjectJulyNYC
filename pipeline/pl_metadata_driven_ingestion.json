@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "lookup_metadata_pipeline",
+				"name": "lookup_config",
 				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
@@ -31,7 +31,7 @@
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "lookup_metadata_pipeline",
+						"activity": "lookup_config",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -53,6 +53,10 @@
 							},
 							"userProperties": [],
 							"typeProperties": {
+								"pipeline": {
+									"referenceName": "pl_file_ingestion_child",
+									"type": "PipelineReference"
+								},
 								"waitOnCompletion": true
 							}
 						}
