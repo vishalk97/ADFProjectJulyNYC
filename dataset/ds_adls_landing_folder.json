@@ -1,0 +1,17 @@
+{
+	"name": "ds_adls_landing_folder",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_adls_nyc_dev",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileSystem": "landing"
+			}
+		}
+	}
+}
