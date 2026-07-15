@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "child_get_metadata_filenames",
+				"name": "gm_get_source_files",
 				"type": "GetMetadata",
 				"dependsOn": [],
 				"policy": {
