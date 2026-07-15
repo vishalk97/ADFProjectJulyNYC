@@ -1,0 +1,23 @@
+{
+	"name": "ds_adls_bronze_dynamic",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_adls_nyc_dev",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"file_name": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "@dataset().file_name",
+				"fileSystem": "bronze"
+			}
+		}
+	}
+}
