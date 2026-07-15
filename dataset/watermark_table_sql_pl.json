@@ -1,0 +1,16 @@
+{
+	"name": "watermark_table_sql_pl",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "sql_nyc_taxi_dev_001",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "watermark_table"
+		}
+	}
+}
