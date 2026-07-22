@@ -5,12 +5,20 @@
 			"referenceName": "ls_adls_nyc_dev",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"container_name": {
+				"type": "string"
+			}
+		},
 		"annotations": [],
 		"type": "Binary",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileSystem": "landing"
+				"fileSystem": {
+					"value": "@dataset().container_name",
+					"type": "Expression"
+				}
 			}
 		}
 	}
