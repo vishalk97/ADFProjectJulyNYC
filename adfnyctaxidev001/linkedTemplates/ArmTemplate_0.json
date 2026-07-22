@@ -141,6 +141,50 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/ds_adls_bronze_file_child')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_adls_nyc_dev",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"container_name": {
+						"type": "string"
+					},
+					"directory_name": {
+						"type": "string"
+					},
+					"file_name": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": {
+							"value": "@dataset().file_name",
+							"type": "Expression"
+						},
+						"folderPath": {
+							"value": "@dataset().directory_name",
+							"type": "Expression"
+						},
+						"fileSystem": {
+							"value": "@dataset().container_name",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_adls_nyc_dev')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/ds_adls_bronze_parquet')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -196,7 +240,110 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/ds_adls_landing_file_child')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_adls_nyc_dev",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"container_name": {
+						"type": "string"
+					},
+					"directory_name": {
+						"type": "string"
+					},
+					"file_name": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": {
+							"value": "@dataset().file_name",
+							"type": "Expression"
+						},
+						"folderPath": {
+							"value": "@dataset().directory_name",
+							"type": "Expression"
+						},
+						"fileSystem": {
+							"value": "@dataset().container_name",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_adls_nyc_dev')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/ds_adls_landing_folder')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_adls_nyc_dev",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileSystem": "landing"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_adls_nyc_dev')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_adls_landing_folder_child')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_adls_nyc_dev",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"container_name": {
+						"type": "string"
+					},
+					"directory_name": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": {
+							"value": "@dataset().directory_name",
+							"type": "Expression"
+						},
+						"fileSystem": {
+							"value": "@dataset().container_name",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_adls_nyc_dev')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_adls_landing_folder_metadata')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -264,47 +411,263 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/ds_adls_landing_folder_metadata')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
+			"name": "[concat(parameters('factoryName'), '/pl_file_ingestion_child')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ls_adls_nyc_dev",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "Binary",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileSystem": "landing"
+				"activities": [
+					{
+						"name": "gm_get_source_files",
+						"type": "GetMetadata",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "ds_adls_landing_folder_child",
+								"type": "DatasetReference",
+								"parameters": {
+									"container_name": {
+										"value": "@pipeline().parameters.source_container",
+										"type": "Expression"
+									},
+									"directory_name": {
+										"value": "@pipeline().parameters.source_folder",
+										"type": "Expression"
+									}
+								}
+							},
+							"fieldList": [
+								"childItems"
+							],
+							"storeSettings": {
+								"type": "AzureBlobFSReadSettings",
+								"recursive": true,
+								"enablePartitionDiscovery": false
+							},
+							"formatSettings": {
+								"type": "BinaryReadSettings"
+							}
+						}
+					},
+					{
+						"name": "fe_process_files",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "gm_get_source_files",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('gm_get_source_files').output.childItems",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "cp_source_to_bronze",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 3,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "BinarySource",
+											"storeSettings": {
+												"type": "AzureBlobFSReadSettings",
+												"recursive": true
+											},
+											"formatSettings": {
+												"type": "BinaryReadSettings"
+											}
+										},
+										"sink": {
+											"type": "BinarySink",
+											"storeSettings": {
+												"type": "AzureBlobFSWriteSettings"
+											}
+										},
+										"enableStaging": false
+									},
+									"inputs": [
+										{
+											"referenceName": "ds_adls_landing_file_child",
+											"type": "DatasetReference",
+											"parameters": {
+												"container_name": {
+													"value": "@pipeline().parameters.source_container",
+													"type": "Expression"
+												},
+												"directory_name": {
+													"value": "@pipeline().parameters.source_folder",
+													"type": "Expression"
+												},
+												"file_name": {
+													"value": "@item().name",
+													"type": "Expression"
+												}
+											}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "ds_adls_bronze_file_child",
+											"type": "DatasetReference",
+											"parameters": {
+												"container_name": {
+													"value": "@pipeline().parameters.destination_container",
+													"type": "Expression"
+												},
+												"directory_name": {
+													"value": "@pipeline().parameters.destination_folder",
+													"type": "Expression"
+												},
+												"file_name": {
+													"value": "@item().name",
+													"type": "Expression"
+												}
+											}
+										}
+									]
+								}
+							]
+						}
+					},
+					{
+						"name": "Insert_Audit_Record",
+						"type": "Script",
+						"dependsOn": [
+							{
+								"activity": "fe_process_files",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"linkedServiceName": {
+							"referenceName": "sql_nyc_taxi_dev_001",
+							"type": "LinkedServiceReference"
+						},
+						"typeProperties": {
+							"scripts": [
+								{
+									"parameters": [
+										{
+											"name": "config_id",
+											"type": "Int32",
+											"value": "@pipeline().parameters.config_id",
+											"direction": "Input"
+										},
+										{
+											"name": "pipeline_name",
+											"type": "String",
+											"value": "@pipeline().Pipeline",
+											"direction": "Input"
+										}
+									],
+									"type": "NonQuery",
+									"text": "INSERT INTO dbo.pipeline_audit\n(\n    config_id,\n    pipeline_name,\n    pipeline_status,\n    created_date\n)\nVALUES\n(\n    @config_id,\n    @pipeline_name,\n    'Success',\n    GETDATE()\n);"
+								}
+							],
+							"scriptBlockExecutionTimeout": "02:00:00"
+						}
+					},
+					{
+						"name": "Update_Config_Status",
+						"type": "Script",
+						"dependsOn": [
+							{
+								"activity": "Insert_Audit_Record",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"linkedServiceName": {
+							"referenceName": "sql_nyc_taxi_dev_001",
+							"type": "LinkedServiceReference"
+						},
+						"typeProperties": {
+							"scripts": [
+								{
+									"parameters": [
+										{
+											"name": "config_id",
+											"type": "Int32",
+											"value": "@pipeline().parameters.config_id",
+											"direction": "Input"
+										}
+									],
+									"type": "NonQuery",
+									"text": "UPDATE dbo.config_table\nSET\n    last_successful_load_time = GETDATE(),\n    last_pipeline_status = 'Success'\nWHERE\n    config_id = @config_id;"
+								}
+							],
+							"scriptBlockExecutionTimeout": "02:00:00"
+						}
 					}
-				}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"parameters": {
+					"source_container": {
+						"type": "string"
+					},
+					"source_folder": {
+						"type": "string"
+					},
+					"destination_container": {
+						"type": "string"
+					},
+					"destination_folder": {
+						"type": "string"
+					},
+					"file_type": {
+						"type": "string"
+					},
+					"config_id": {
+						"type": "int"
+					}
+				},
+				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_adls_nyc_dev')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ds_adls_landing_folder_child')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ls_adls_nyc_dev",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "Binary",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileSystem": "landing"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_adls_nyc_dev')]"
+				"[concat(variables('factoryId'), '/datasets/ds_adls_landing_folder_child')]",
+				"[concat(variables('factoryId'), '/linkedServices/sql_nyc_taxi_dev_001')]",
+				"[concat(variables('factoryId'), '/datasets/ds_adls_landing_file_child')]",
+				"[concat(variables('factoryId'), '/datasets/ds_adls_bronze_file_child')]"
 			]
 		},
 		{
@@ -522,69 +885,6 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/pl_file_ingestion_child')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "child_get_metadata_filenames",
-						"type": "GetMetadata",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataset": {
-								"referenceName": "ds_adls_landing_folder_child",
-								"type": "DatasetReference",
-								"parameters": {}
-							},
-							"fieldList": [
-								"childItems"
-							],
-							"storeSettings": {
-								"type": "AzureBlobFSReadSettings",
-								"enablePartitionDiscovery": false
-							},
-							"formatSettings": {
-								"type": "BinaryReadSettings"
-							}
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"parameters": {
-					"source_container": {
-						"type": "string"
-					},
-					"source_folder": {
-						"type": "string"
-					},
-					"destination_container": {
-						"type": "string"
-					},
-					"destination_folder": {
-						"type": "string"
-					},
-					"file_type": {
-						"type": "string"
-					}
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/ds_adls_landing_folder_child')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/pl_metadata_driven_ingestion')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -612,11 +912,12 @@
 								"referenceName": "config_table_pl_metadata",
 								"type": "DatasetReference",
 								"parameters": {}
-							}
+							},
+							"firstRowOnly": false
 						}
 					},
 					{
-						"name": "outer_for_each_return_source_systems",
+						"name": "ForEach_Config",
 						"type": "ForEach",
 						"dependsOn": [
 							{
@@ -632,9 +933,10 @@
 								"value": "@activity('lookup_config').output.value",
 								"type": "Expression"
 							},
+							"isSequential": false,
 							"activities": [
 								{
-									"name": "master_pl_call_child_pl",
+									"name": "call_child_pipeline",
 									"type": "ExecutePipeline",
 									"dependsOn": [],
 									"policy": {
@@ -647,7 +949,14 @@
 											"type": "PipelineReference"
 										},
 										"waitOnCompletion": true,
-										"parameters": {}
+										"parameters": {
+											"source_container": "@item().source_container",
+											"source_folder": "@item().source_folder",
+											"destination_container": "@item().destination_container",
+											"destination_folder": "@item().destination_folder",
+											"file_type": "@item().file_type",
+											"config_id": "@item().config_id"
+										}
 									}
 								}
 							]
