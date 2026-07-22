@@ -57,7 +57,14 @@
 									"referenceName": "pl_file_ingestion_child",
 									"type": "PipelineReference"
 								},
-								"waitOnCompletion": true
+								"waitOnCompletion": true,
+								"parameters": {
+									"source_container": "@item().source_container",
+									"source_folder": "@item().source_folder",
+									"destination_container": "@item().destination_container",
+									"destination_folder": "@item().destination_folder",
+									"file_type": "@item().file_type"
+								}
 							}
 						}
 					]
