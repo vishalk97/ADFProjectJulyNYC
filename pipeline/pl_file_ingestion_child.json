@@ -151,6 +151,9 @@
 			},
 			"file_type": {
 				"type": "string"
+			},
+			"config_id": {
+				"type": "int"
 			}
 		},
 		"annotations": []

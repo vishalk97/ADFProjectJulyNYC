@@ -28,7 +28,7 @@
 				}
 			},
 			{
-				"name": "outer_for_each_return_source_systems",
+				"name": "ForEach_Config",
 				"type": "ForEach",
 				"dependsOn": [
 					{
@@ -41,13 +41,12 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('lookup_config').output.value",
+						"value": "@activity('Lookup').output.value",
 						"type": "Expression"
 					},
-					"isSequential": false,
 					"activities": [
 						{
-							"name": "master_pl_call_child_pl",
+							"name": "call_child_pipeline",
 							"type": "ExecutePipeline",
 							"dependsOn": [],
 							"policy": {
@@ -65,7 +64,8 @@
 									"source_folder": "@item().source_folder",
 									"destination_container": "@item().destination_container",
 									"destination_folder": "@item().destination_folder",
-									"file_type": "@item().file_type"
+									"file_type": "@item().file_type",
+									"config_id": "@item().config_id"
 								}
 							}
 						}
