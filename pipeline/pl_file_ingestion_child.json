@@ -167,10 +167,16 @@
 									"type": "Int32",
 									"value": "@pipeline().parameters.config_id",
 									"direction": "Input"
+								},
+								{
+									"name": "pipeline_name",
+									"type": "String",
+									"value": "@pipeline().Pipeline",
+									"direction": "Input"
 								}
 							],
 							"type": "NonQuery",
-							"text": "INSERT INTO dbo.pipeline_audit\n(\n    config_id,\n    pipeline_status,\n    created_date\n)\nVALUES\n(\n    @config_id,\n    'Success',\n    GETDATE()\n);"
+							"text": "INSERT INTO dbo.pipeline_audit\n(\n    config_id,\n    pipeline_name,\n    pipeline_status,\n    created_date\n)\nVALUES\n(\n    @config_id,\n    @pipeline_name,\n    'Success',\n    GETDATE()\n);"
 						}
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
