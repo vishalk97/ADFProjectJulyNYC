@@ -1,0 +1,29 @@
+{
+	"name": "ds_adls_bronze_file_child",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_adls_nyc_dev",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"container_name": {
+				"type": "string"
+			},
+			"directory_name": {
+				"type": "string"
+			},
+			"file_name": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "directory_name",
+				"fileSystem": "container_name"
+			}
+		}
+	}
+}
