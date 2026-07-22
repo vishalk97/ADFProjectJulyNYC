@@ -23,7 +23,8 @@
 					"dataset": {
 						"referenceName": "config_table_pl_metadata",
 						"type": "DatasetReference"
-					}
+					},
+					"firstRowOnly": false
 				}
 			},
 			{
@@ -43,6 +44,7 @@
 						"value": "@activity('lookup_config').output.value",
 						"type": "Expression"
 					},
+					"isSequential": false,
 					"activities": [
 						{
 							"name": "master_pl_call_child_pl",
