@@ -41,7 +41,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('Lookup').output.value",
+						"value": "@activity('lookup_config').output.value",
 						"type": "Expression"
 					},
 					"activities": [

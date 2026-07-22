@@ -134,6 +134,47 @@
 						}
 					]
 				}
+			},
+			{
+				"name": "Insert_Audit_Record",
+				"type": "Script",
+				"dependsOn": [
+					{
+						"activity": "fe_process_files",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "sql_nyc_taxi_dev_001",
+					"type": "LinkedServiceReference"
+				},
+				"typeProperties": {
+					"scripts": [
+						{
+							"parameters": [
+								{
+									"name": "config_id",
+									"type": "Int32",
+									"value": "@pipeline().parameters.config_id",
+									"direction": "Input"
+								}
+							],
+							"type": "NonQuery",
+							"text": "INSERT INTO dbo.pipeline_audit\n(\n    config_id,\n    pipeline_status,\n    created_date\n)\nVALUES\n(\n    @config_id,\n    'Success',\n    GETDATE()\n);"
+						}
+					],
+					"scriptBlockExecutionTimeout": "02:00:00"
+				}
 			}
 		],
 		"parameters": {
