@@ -83,11 +83,37 @@
 										"type": "BinaryReadSettings"
 									}
 								},
+								"sink": {
+									"type": "BinarySink",
+									"storeSettings": {
+										"type": "AzureBlobFSWriteSettings"
+									}
+								},
 								"enableStaging": false
 							},
 							"inputs": [
 								{
-									"referenceName": "ds_adls_landing_folder_child",
+									"referenceName": "ds_adls_landing_file_child",
+									"type": "DatasetReference",
+									"parameters": {
+										"container_name": {
+											"value": "@pipeline().parameters.source_container",
+											"type": "Expression"
+										},
+										"directory_name": {
+											"value": "@pipeline().parameters.source_folder",
+											"type": "Expression"
+										},
+										"file_name": {
+											"value": "@item().name",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "ds_adls_bronze_file_child",
 									"type": "DatasetReference"
 								}
 							]
