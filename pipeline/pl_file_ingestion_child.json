@@ -114,7 +114,21 @@
 							"outputs": [
 								{
 									"referenceName": "ds_adls_bronze_file_child",
-									"type": "DatasetReference"
+									"type": "DatasetReference",
+									"parameters": {
+										"container_name": {
+											"value": "@pipeline().parameters.destination_container",
+											"type": "Expression"
+										},
+										"directory_name": {
+											"value": "@pipeline().parameters.destination_folder",
+											"type": "Expression"
+										},
+										"file_name": {
+											"value": "@item().name",
+											"type": "Expression"
+										}
+									}
 								}
 							]
 						}
