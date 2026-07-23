@@ -8,6 +8,9 @@
 		"sql_nyc_taxi_dev_001_password": {
 			"value": ""
 		},
+		"AzureDatabricks1_accessToken": {
+			"value": ""
+		},
 		"ls_adls_nyc_dev_properties_typeProperties_url": {
 			"value": "https://stnyctaxidev001.dfs.core.windows.net/"
 		},
@@ -19,6 +22,9 @@
 		},
 		"sql_nyc_taxi_dev_001_properties_typeProperties_userName": {
 			"value": "sqladmin"
+		},
+		"AzureDatabricks1_properties_typeProperties_existingClusterId": {
+			"value": "0722-155638-mfqm9dwb"
 		},
 		"containerUri": {
 			"value": ""

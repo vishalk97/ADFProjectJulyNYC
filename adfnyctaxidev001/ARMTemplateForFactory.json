@@ -11,6 +11,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'sql_nyc_taxi_dev_001'"
 		},
+		"AzureDatabricks1_accessToken": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accessToken' of 'AzureDatabricks1'"
+		},
 		"ls_adls_nyc_dev_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://stnyctaxidev001.dfs.core.windows.net/"
@@ -26,6 +30,10 @@
 		"sql_nyc_taxi_dev_001_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "sqladmin"
+		},
+		"AzureDatabricks1_properties_typeProperties_existingClusterId": {
+			"type": "string",
+			"defaultValue": "0722-155638-mfqm9dwb"
 		}
 	},
 	"variables": {
@@ -167,6 +175,37 @@
 											}
 										}
 									]
+								},
+								{
+									"name": "nb_bronze_ingestion",
+									"type": "DatabricksNotebook",
+									"dependsOn": [
+										{
+											"activity": "cp_source_to_bronze",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"notebookPath": "/Users/vishalkrishnan967@gmail.com/NYC_Taxi_Project/Bronze/Bronze_Ingestion",
+										"baseParameters": {
+											"source_path": "@{item().source_path}",
+											"target_table": "@{item().target_table}"
+										}
+									},
+									"linkedServiceName": {
+										"referenceName": "AzureDatabricks1",
+										"type": "LinkedServiceReference"
+									}
 								}
 							]
 						}
@@ -201,13 +240,19 @@
 										{
 											"name": "config_id",
 											"type": "Int32",
-											"value": "@pipeline().parameters.config_id",
+											"value": {
+												"value": "@pipeline().parameters.config_id",
+												"type": "Expression"
+											},
 											"direction": "Input"
 										},
 										{
 											"name": "pipeline_name",
 											"type": "String",
-											"value": "@pipeline().Pipeline",
+											"value": {
+												"value": "@pipeline().Pipeline",
+												"type": "Expression"
+											},
 											"direction": "Input"
 										}
 									],
@@ -248,7 +293,10 @@
 										{
 											"name": "config_id",
 											"type": "Int32",
-											"value": "@pipeline().parameters.config_id",
+											"value": {
+												"value": "@pipeline().parameters.config_id",
+												"type": "Expression"
+											},
 											"direction": "Input"
 										}
 									],
@@ -289,7 +337,8 @@
 				"[concat(variables('factoryId'), '/datasets/ds_adls_landing_folder_child')]",
 				"[concat(variables('factoryId'), '/linkedServices/sql_nyc_taxi_dev_001')]",
 				"[concat(variables('factoryId'), '/datasets/ds_adls_landing_file_child')]",
-				"[concat(variables('factoryId'), '/datasets/ds_adls_bronze_file_child')]"
+				"[concat(variables('factoryId'), '/datasets/ds_adls_bronze_file_child')]",
+				"[concat(variables('factoryId'), '/linkedServices/AzureDatabricks1')]"
 			]
 		},
 		{
@@ -555,7 +604,6 @@
 								"value": "@activity('lookup_config').output.value",
 								"type": "Expression"
 							},
-							"isSequential": false,
 							"activities": [
 								{
 									"name": "call_child_pipeline",
@@ -572,12 +620,30 @@
 										},
 										"waitOnCompletion": true,
 										"parameters": {
-											"source_container": "@item().source_container",
-											"source_folder": "@item().source_folder",
-											"destination_container": "@item().destination_container",
-											"destination_folder": "@item().destination_folder",
-											"file_type": "@item().file_type",
-											"config_id": "@item().config_id"
+											"source_container": {
+												"value": "@item().source_container",
+												"type": "Expression"
+											},
+											"source_folder": {
+												"value": "@item().source_folder",
+												"type": "Expression"
+											},
+											"destination_container": {
+												"value": "@item().destination_container",
+												"type": "Expression"
+											},
+											"destination_folder": {
+												"value": "@item().destination_folder",
+												"type": "Expression"
+											},
+											"file_type": {
+												"value": "@item().file_type",
+												"type": "Expression"
+											},
+											"config_id": {
+												"value": "@item().config_id",
+												"type": "Expression"
+											}
 										}
 									}
 								}
@@ -969,6 +1035,24 @@
 						"type": "SecureString",
 						"value": "[parameters('sql_nyc_taxi_dev_001_password')]"
 					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureDatabricks1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureDatabricks",
+				"typeProperties": {
+					"domain": "https://adb-7405616075112409.9.azuredatabricks.net",
+					"accessToken": {
+						"type": "SecureString",
+						"value": "[parameters('AzureDatabricks1_accessToken')]"
+					},
+					"existingClusterId": "[parameters('AzureDatabricks1_properties_typeProperties_existingClusterId')]"
 				}
 			},
 			"dependsOn": []

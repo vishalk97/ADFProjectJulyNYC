@@ -11,6 +11,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'sql_nyc_taxi_dev_001'"
 		},
+		"AzureDatabricks1_accessToken": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accessToken' of 'AzureDatabricks1'"
+		},
 		"ls_adls_nyc_dev_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://stnyctaxidev001.dfs.core.windows.net/"
@@ -26,6 +30,10 @@
 		"sql_nyc_taxi_dev_001_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "sqladmin"
+		},
+		"AzureDatabricks1_properties_typeProperties_existingClusterId": {
+			"type": "string",
+			"defaultValue": "0722-155638-mfqm9dwb"
 		},
 		"containerUri": {
 			"type": "string",
@@ -57,6 +65,9 @@
 					"sql_nyc_taxi_dev_001_password": {
 						"value": "[parameters('sql_nyc_taxi_dev_001_password')]"
 					},
+					"AzureDatabricks1_accessToken": {
+						"value": "[parameters('AzureDatabricks1_accessToken')]"
+					},
 					"ls_adls_nyc_dev_properties_typeProperties_url": {
 						"value": "[parameters('ls_adls_nyc_dev_properties_typeProperties_url')]"
 					},
@@ -68,6 +79,9 @@
 					},
 					"sql_nyc_taxi_dev_001_properties_typeProperties_userName": {
 						"value": "[parameters('sql_nyc_taxi_dev_001_properties_typeProperties_userName')]"
+					},
+					"AzureDatabricks1_properties_typeProperties_existingClusterId": {
+						"value": "[parameters('AzureDatabricks1_properties_typeProperties_existingClusterId')]"
 					}
 				}
 			},
