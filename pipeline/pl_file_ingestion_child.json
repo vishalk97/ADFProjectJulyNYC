@@ -131,6 +131,37 @@
 									}
 								}
 							]
+						},
+						{
+							"name": "nb_bronze_ingestion",
+							"type": "DatabricksNotebook",
+							"dependsOn": [
+								{
+									"activity": "cp_source_to_bronze",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"notebookPath": "",
+								"baseParameters": {
+									"source_path": "@{item().source_path}",
+									"target_table": "@{item().target_table}"
+								}
+							},
+							"linkedServiceName": {
+								"referenceName": "AzureDatabricks1",
+								"type": "LinkedServiceReference"
+							}
 						}
 					]
 				}
@@ -165,13 +196,19 @@
 								{
 									"name": "config_id",
 									"type": "Int32",
-									"value": "@pipeline().parameters.config_id",
+									"value": {
+										"value": "@pipeline().parameters.config_id",
+										"type": "Expression"
+									},
 									"direction": "Input"
 								},
 								{
 									"name": "pipeline_name",
 									"type": "String",
-									"value": "@pipeline().Pipeline",
+									"value": {
+										"value": "@pipeline().Pipeline",
+										"type": "Expression"
+									},
 									"direction": "Input"
 								}
 							],
@@ -212,7 +249,10 @@
 								{
 									"name": "config_id",
 									"type": "Int32",
-									"value": "@pipeline().parameters.config_id",
+									"value": {
+										"value": "@pipeline().parameters.config_id",
+										"type": "Expression"
+									},
 									"direction": "Input"
 								}
 							],
