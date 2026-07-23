@@ -198,8 +198,11 @@
 									"typeProperties": {
 										"notebookPath": "/Users/vishalkrishnan967@gmail.com/NYC_Taxi_Project/Bronze/Bronze_Ingestion",
 										"baseParameters": {
-											"source_path": "@{item().source_path}",
-											"target_table": "@{item().target_table}"
+											"source_path": "source_path = @concat(\n'abfss://',\nitem().destination_container,\n'@stnyctaxidev001.dfs.core.windows.net/',\nitem().destination_folder,\n'/'\n)",
+											"target_table": {
+												"value": "nyc_catalog.bronze.fhvhv_tripdata",
+												"type": "Expression"
+											}
 										}
 									},
 									"linkedServiceName": {
@@ -604,6 +607,7 @@
 								"value": "@activity('lookup_config').output.value",
 								"type": "Expression"
 							},
+							"isSequential": false,
 							"activities": [
 								{
 									"name": "call_child_pipeline",
