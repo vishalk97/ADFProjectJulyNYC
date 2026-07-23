@@ -152,7 +152,7 @@
 							},
 							"userProperties": [],
 							"typeProperties": {
-								"notebookPath": "",
+								"notebookPath": "/Users/vishalkrishnan967@gmail.com/NYC_Taxi_Project/Bronze/Bronze_Ingestion",
 								"baseParameters": {
 									"source_path": "@{item().source_path}",
 									"target_table": "@{item().target_table}"
