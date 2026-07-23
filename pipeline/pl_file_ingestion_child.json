@@ -154,7 +154,7 @@
 							"typeProperties": {
 								"notebookPath": "/Users/vishalkrishnan967@gmail.com/NYC_Taxi_Project/Bronze/Bronze_Ingestion",
 								"baseParameters": {
-									"source_path": "source_path = @concat(\n'abfss://',\nitem().destination_container,\n'@stnyctaxidev001.dfs.core.windows.net/',\nitem().destination_folder,\n'/'\n)",
+									"source_path": "@concat('abfss://',item().destination_container,'@stnyctaxidev001.dfs.core.windows.net/',item().destination_folder,'/')",
 									"target_table": {
 										"value": "nyc_catalog.bronze.fhvhv_tripdata",
 										"type": "Expression"
