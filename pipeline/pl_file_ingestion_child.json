@@ -133,7 +133,7 @@
 							]
 						},
 						{
-							"name": "nb_bronze_ingestion",
+							"name": "db_bronze_ingestion",
 							"type": "DatabricksNotebook",
 							"dependsOn": [
 								{
@@ -154,14 +154,8 @@
 							"typeProperties": {
 								"notebookPath": "/Users/vishalkrishnan967@gmail.com/NYC_Taxi_Project/Bronze/Bronze_Ingestion",
 								"baseParameters": {
-									"source_path": {
-										"value": "@concat(\n'abfss://',\npipeline().parameters.destination_container,\n'@stnyctaxidev001.dfs.core.windows.net/',\npipeline().parameters.destination_folder,\n'/',\nitem().name\n)",
-										"type": "Expression"
-									},
-									"target_table": {
-										"value": "@pipeline().parameters.target_table",
-										"type": "Expression"
-									}
+									"source_path": "@concat('abfss://',pipeline().parameters.destination_container,'@stnyctaxidev001.dfs.core.windows.net/',pipeline().parameters.destination_folder,'/',item().name)",
+									"target_table": "@pipeline().parameters.target_table"
 								}
 							},
 							"linkedServiceName": {
